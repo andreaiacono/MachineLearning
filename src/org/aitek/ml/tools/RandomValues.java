@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.aitek.ml.core.Item;
-import org.aitek.ml.core.User;
 import org.aitek.ml.core.Rankable;
+import org.aitek.ml.core.User;
 import org.aitek.ml.core.Voter;
 
 public class RandomValues {
 
-	static final int MAX_VOTE = 5;
+	static final int MAX_VOTE = 50;
 
 	static List<Rankable> createItems(int n) {
 

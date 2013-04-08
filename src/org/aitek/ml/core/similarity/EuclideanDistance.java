@@ -5,12 +5,13 @@ import java.util.List;
 import org.aitek.ml.core.Rankable;
 import org.aitek.ml.core.Voter;
 
-public class EuclideanDistanceScore implements Similarity {
+public class EuclideanDistance implements Similarity {
 
 	@Override
 	public double getScore(List<Rankable> items, Voter user1, Voter user2) {
 
-		double value = -1;
+		double squaresSum = 0;
+		boolean matched = false;
 
 		for (Rankable item : items) {
 
@@ -18,15 +19,16 @@ public class EuclideanDistanceScore implements Similarity {
 			Integer vote2 = user2.getVote(item);
 
 			if (vote1 != null && vote2 != null) {
-				value += Math.pow(vote1 - vote2, 2);
+				squaresSum += Math.pow(vote1 - vote2, 2);
+				matched = true;
 			}
 		}
 
-		if (value == -1) {
+		if (!matched) {
 			return -1;
 		}
 
 		// we don't need the distance, but a measure of how close two voters are
-		return 1 / (1 + Math.sqrt(value));
+		return 1 / (1 + Math.sqrt(squaresSum));
 	}
 }

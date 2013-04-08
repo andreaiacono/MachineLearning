@@ -7,5 +7,5 @@ import org.aitek.ml.core.Voter;
 
 public interface Similarity {
 
-	double getScore(List<Rankable> item, Voter user1, Voter user2);
+	double getScore(List<Rankable> items, Voter user1, Voter user2);
 }

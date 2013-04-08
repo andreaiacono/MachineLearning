@@ -16,4 +16,9 @@ public class Item implements Rankable {
 
 	}
 
+	@Override
+	public String toString() {
+
+		return description;
+	}
 }

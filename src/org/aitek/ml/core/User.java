@@ -1,6 +1,8 @@
 package org.aitek.ml.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class User implements Voter {
@@ -17,7 +19,7 @@ public class User implements Voter {
 	@Override
 	public void setVote(Rankable item, Integer value) {
 
-		if (item != null) {
+		if (item != null && value != null) {
 			votes.put(item, value);
 		}
 	}
@@ -33,11 +35,28 @@ public class User implements Voter {
 			}
 		}
 
-		return -1;
+		return null;
 	}
 
 	@Override
 	public String getName() {
+
+		return name;
+	}
+
+	public static List<Voter> createUsers(String[] names) {
+
+		List<Voter> users = new ArrayList<Voter>();
+
+		for (String name : names) {
+			users.add(new User(name));
+		}
+
+		return users;
+	}
+
+	@Override
+	public String toString() {
 
 		return name;
 	}
