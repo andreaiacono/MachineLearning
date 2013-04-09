@@ -1,4 +1,4 @@
 MachineLearning
 ===============
 
-A set of libraries for Machine Learning
+A set of tools for Machine Learning
