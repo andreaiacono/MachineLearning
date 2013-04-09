@@ -6,7 +6,7 @@ import java.util.List;
 import org.aitek.ml.core.Item;
 import org.aitek.ml.core.Rankable;
 import org.aitek.ml.core.User;
-import org.aitek.ml.core.similarity.EuclideanDistance;
+import org.aitek.ml.core.similarity.ManhattanDistance;
 import org.aitek.ml.core.similarity.Similarity;
 
 public class Main {
@@ -72,7 +72,7 @@ public class Main {
 		jack.setVote(night, 30);
 		jack.setVote(you, 35);
 
-		Similarity euclidean = new EuclideanDistance();
+		Similarity euclidean = new ManhattanDistance();
 
 		System.out.println("Euclidean Lisa - Gene:" + euclidean.getScore(movies, lisa, gene));
 
