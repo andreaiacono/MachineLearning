@@ -107,7 +107,7 @@ public class RandomData {
 		for (int j = 0; j < lines.length - 1; j++) {
 
 			String[] votes = lines[j].split(",");
-			for (int i = 0; i < votes.length - 1; i++) {
+			for (int i = 0; i < votes.length; i++) {
 				try {
 					users.get(i).setVote(items.get(j), Integer.parseInt(votes[i]));
 				}

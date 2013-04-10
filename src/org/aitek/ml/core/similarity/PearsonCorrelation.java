@@ -1,11 +1,12 @@
 package org.aitek.ml.core.similarity;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import org.aitek.ml.core.Rankable;
 import org.aitek.ml.core.Voter;
 
-public class PearsonCorrelation implements Similarity {
+public class PearsonCorrelation implements Measurable {
 
 	@Override
 	public double getScore(List<Rankable> items, Voter user1, Voter user2) {
@@ -33,7 +34,7 @@ public class PearsonCorrelation implements Similarity {
 		}
 
 		if (matches == 0) {
-			return -1;
+			return -100;
 		}
 
 		double numerator = usersSquaresProductsSum - (user1Sum * user2Sum / matches);
@@ -43,7 +44,9 @@ public class PearsonCorrelation implements Similarity {
 			return 0;
 		}
 
-		return numerator / denominator;
+		double distance = numerator / denominator;
+		// FIX THIS
+		DecimalFormat dm = new DecimalFormat("#.###");
+		return Double.valueOf(dm.format(distance));
 	}
-
 }
