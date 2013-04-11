@@ -9,7 +9,7 @@ import org.aitek.ml.core.Voter;
 public class EuclideanDistance implements Measurable {
 
 	@Override
-	public double getScore(List<Rankable> items, Voter user1, Voter user2) {
+	public double getDistanceBetweenUsers(List<Rankable> items, Voter user1, Voter user2) {
 
 		return getScore(items, user1, user2, 2);
 	}

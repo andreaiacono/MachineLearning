@@ -2,11 +2,11 @@ package org.aitek.ml.core.similarity;
 
 public class SimilarityFactory {
 
-	public enum SimilarityType {
+	public enum SimilarityMethod {
 		EUCLIDEAN, MANHATTAN, PEARSON;
 	}
 
-	public static Measurable getSimilarity(SimilarityType type) {
+	public static Measurable getSimilarity(SimilarityMethod type) {
 
 		switch (type) {
 			case EUCLIDEAN:
@@ -15,10 +15,8 @@ public class SimilarityFactory {
 				return new ManhattanDistance();
 			case PEARSON:
 				return new PearsonCorrelation();
-			default:
-				return null;
 		}
-
+		return null;
 	}
 
 }

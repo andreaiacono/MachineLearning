@@ -74,7 +74,7 @@ public class Main {
 
 		Measurable euclidean = new ManhattanDistance();
 
-		System.out.println("Euclidean Lisa - Gene:" + euclidean.getScore(movies, lisa, gene));
+		System.out.println("Euclidean Lisa - Gene:" + euclidean.getDistanceBetweenUsers(movies, lisa, gene));
 
 	}
 }

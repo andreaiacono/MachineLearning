@@ -7,5 +7,5 @@ import org.aitek.ml.core.Voter;
 
 public interface Measurable {
 
-	double getScore(List<Rankable> items, Voter user1, Voter user2);
+	double getDistanceBetweenUsers(List<Rankable> items, Voter user1, Voter user2);
 }

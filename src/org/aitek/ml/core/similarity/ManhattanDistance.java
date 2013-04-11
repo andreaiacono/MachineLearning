@@ -9,7 +9,7 @@ import org.aitek.ml.core.Voter;
 public class ManhattanDistance implements Measurable {
 
 	@Override
-	public double getScore(List<Rankable> items, Voter user1, Voter user2) {
+	public double getDistanceBetweenUsers(List<Rankable> items, Voter user1, Voter user2) {
 
 		double squaresSum = 0;
 		boolean matched = false;

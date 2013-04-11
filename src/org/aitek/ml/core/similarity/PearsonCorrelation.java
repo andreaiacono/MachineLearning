@@ -9,7 +9,7 @@ import org.aitek.ml.core.Voter;
 public class PearsonCorrelation implements Measurable {
 
 	@Override
-	public double getScore(List<Rankable> items, Voter user1, Voter user2) {
+	public double getDistanceBetweenUsers(List<Rankable> items, Voter user1, Voter user2) {
 
 		double user1Sum = 0;
 		double user2Sum = 0;
@@ -44,7 +44,7 @@ public class PearsonCorrelation implements Measurable {
 			return 0;
 		}
 
-		double distance = numerator / denominator;
+		double distance = ((numerator / denominator) + 1) / 2;
 		// FIX THIS
 		DecimalFormat dm = new DecimalFormat("#.###");
 		return Double.valueOf(dm.format(distance));
