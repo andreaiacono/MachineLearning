@@ -1,5 +1,6 @@
 package org.aitek.ml.demo;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import org.aitek.ml.core.Rankable;
@@ -10,7 +11,7 @@ import org.aitek.ml.core.similarity.SimilarityFactory;
 import org.aitek.ml.core.similarity.SimilarityFactory.SimilarityMethod;
 import org.aitek.ml.tools.RandomData;
 
-public class Similarity {
+public class UserBasedSample {
 
 	public static void main(String[] args) throws Exception {
 
@@ -22,21 +23,25 @@ public class Similarity {
 
 		for (SimilarityMethod similarityMethod : SimilarityMethod.values()) {
 			Measurable similarity = SimilarityFactory.getSimilarity(similarityMethod);
-			printGrid(similarity, users, items);
-			System.out.println("The user closer to User n.4 is " + aUser.getCloserVoter(users, items, similarity));
+			printGrid(similarity, users, items, 2);
+			System.out.println("The user closer to User n.4 is " + aUser.getClosestVoter(users, items, similarity));
 			System.out.println("The most desirable item for User n.4 is " + ((User) aUser).getMostDesiderableItem(items, users, similarity));
 		}
-
-		// the highest score for item
 
 		// System.out.println(RandomData.getDataAsCsv(items, users, false));
 		// RandomData.setRandomVotes(items, users);
 	}
 
-	private static void printGrid(Measurable distance, List<Voter> users, List<Rankable> items) {
+	private static void printGrid(Measurable measurable, List<Voter> users, List<Rankable> items, int decimalsNumber) {
 
-		System.out.println("\n\nMethod: " + distance.getClass().getSimpleName());
+		System.out.println("\n\nMethod: " + measurable.getClass().getSimpleName());
 		System.out.print("User\t");
+
+		StringBuffer decimals = new StringBuffer();
+		for (int d = 0; d < decimalsNumber; d++) {
+			decimals.append("#");
+		}
+		DecimalFormat dm = new DecimalFormat("#." + decimals.toString());
 
 		for (int j = 0; j < users.size(); j++) {
 			System.out.print("\tn." + j);
@@ -48,11 +53,11 @@ public class Similarity {
 			System.out.print(user1 + "\t");
 			for (int i = 0; i <= j; i++) {
 				Voter user2 = users.get(i);
-				System.out.print(distance.getDistanceBetweenUsers(items, user1, user2) + "\t");
+				double distance = measurable.getDistanceBetweenUsers(items, user1, user2);
+				System.out.print(Double.valueOf(dm.format(distance)) + "\t");
 			}
 			System.out.println("");
 		}
 
 	}
-
 }

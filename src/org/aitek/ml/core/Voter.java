@@ -12,8 +12,10 @@ public interface Voter {
 
 	public void setVote(Rankable item, Integer value);
 
-	public Voter getCloserVoter(List<Voter> voters, List<Rankable> rankables, Measurable measurable);
+	public Voter getClosestVoter(List<Voter> voters, List<Rankable> rankables, Measurable measurable);
 
 	public Double getWeightedScoreForItem(Rankable item, List<Rankable> items, List<Voter> voters, Measurable measurable);
+
+	public List<Voter> getClosestVoters(List<Voter> voters, List<Rankable> items, Measurable measurable, int size);
 
 }

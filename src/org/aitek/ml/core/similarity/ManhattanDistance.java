@@ -34,4 +34,28 @@ public class ManhattanDistance implements Measurable {
 		DecimalFormat dm = new DecimalFormat("#.###");
 		return Double.valueOf(dm.format(distance));
 	}
+
+	@Override
+	public double getDistanceBetweenItems(List<Voter> voters, Rankable item1, Rankable item2) {
+
+		double squaresSum = 0;
+		boolean matched = false;
+
+		for (Voter voter : voters) {
+
+			Integer vote1 = voter.getVote(item1);
+			Integer vote2 = voter.getVote(item2);
+
+			if (vote1 != null && vote2 != null) {
+				squaresSum += Math.abs(vote1 - vote2);
+				matched = true;
+			}
+		}
+
+		if (!matched) {
+			return -1;
+		}
+
+		return 1 / (1 + squaresSum);
+	}
 }

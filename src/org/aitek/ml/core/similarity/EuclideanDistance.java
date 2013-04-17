@@ -1,6 +1,5 @@
 package org.aitek.ml.core.similarity;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import org.aitek.ml.core.Rankable;
@@ -10,11 +9,6 @@ public class EuclideanDistance implements Measurable {
 
 	@Override
 	public double getDistanceBetweenUsers(List<Rankable> items, Voter user1, Voter user2) {
-
-		return getScore(items, user1, user2, 2);
-	}
-
-	public double getScore(List<Rankable> items, Voter user1, Voter user2, int decimals) {
 
 		double squaresSum = 0;
 		boolean matched = false;
@@ -35,9 +29,33 @@ public class EuclideanDistance implements Measurable {
 		}
 
 		// we don't need the distance, but a measure of how close two voters are
-		double distance = 1 / (1 + Math.sqrt(squaresSum));
-		// FIX THIS
-		DecimalFormat dm = new DecimalFormat("#.###");
-		return Double.valueOf(dm.format(distance));
+		return 1 / (1 + Math.sqrt(squaresSum));
+
 	}
+
+	@Override
+	public double getDistanceBetweenItems(List<Voter> voters, Rankable item1, Rankable item2) {
+
+		double squaresSum = 0;
+		boolean matched = false;
+
+		for (Voter voter : voters) {
+
+			Integer vote1 = voter.getVote(item1);
+			Integer vote2 = voter.getVote(item2);
+
+			if (vote1 != null && vote2 != null) {
+				squaresSum += Math.pow(vote1 - vote2, 2);
+				matched = true;
+			}
+		}
+
+		if (!matched) {
+			return -1;
+		}
+
+		// we don't need the distance, but a measure of how close two voters are
+		return 1 / (1 + Math.sqrt(squaresSum));
+	}
+
 }

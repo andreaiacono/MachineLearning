@@ -1,6 +1,7 @@
 package org.aitek.ml.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,32 @@ public class User implements Voter {
 	}
 
 	@Override
-	public Voter getCloserVoter(List<Voter> voters, List<Rankable> items, Measurable measurable) {
+	public List<Voter> getClosestVoters(List<Voter> voters, List<Rankable> items, Measurable measurable, int size) {
+
+		List<ScoredUser> scoredUsers = new ArrayList<ScoredUser>();
+
+		for (int j = 0; j < voters.size(); j++) {
+
+			Voter user = voters.get(j);
+			if (user != this) {
+
+				double distance = measurable.getDistanceBetweenUsers(items, user, this);
+				ScoredUser scoredUser = new ScoredUser(distance, user);
+				scoredUsers.add(scoredUser);
+			}
+		}
+
+		Collections.sort(scoredUsers);
+		size = size < scoredUsers.size() ? scoredUsers.size() : size;
+		List<Voter> users = new ArrayList<Voter>();
+		for (int j = 0; j < size; j++) {
+			users.add(scoredUsers.get(j).voter);
+		}
+		return users;
+	}
+
+	@Override
+	public Voter getClosestVoter(List<Voter> voters, List<Rankable> items, Measurable measurable) {
 
 		double max = -1;
 		Voter closerUser = null;
@@ -118,6 +144,25 @@ public class User implements Voter {
 		}
 
 		return users;
+	}
+
+	class ScoredUser implements Comparable<ScoredUser> {
+
+		private final Double score;
+		private final Voter voter;
+
+		public ScoredUser(Double score, Voter voter) {
+
+			this.score = score;
+			this.voter = voter;
+		}
+
+		@Override
+		public int compareTo(ScoredUser o) {
+
+			ScoredUser otherUser = o;
+			return score.compareTo(otherUser.score);
+		}
 	}
 
 }
