@@ -2,21 +2,21 @@ package org.aitek.ml.core.similarity;
 
 import java.util.List;
 
-import org.aitek.ml.core.Rankable;
+import org.aitek.ml.core.Item;
 import org.aitek.ml.core.Voter;
 
-public class EuclideanDistance implements Measurable {
+public class EuclideanDistance implements Similarity {
 
 	@Override
-	public double getDistanceBetweenUsers(List<Rankable> items, Voter user1, Voter user2) {
+	public double getDistanceBetweenVoters(List<Item> items, Voter voter1, Voter voter2) {
 
 		double squaresSum = 0;
 		boolean matched = false;
 
-		for (Rankable item : items) {
+		for (Item item : items) {
 
-			Integer vote1 = user1.getVote(item);
-			Integer vote2 = user2.getVote(item);
+			Integer vote1 = voter1.getVote(item);
+			Integer vote2 = voter2.getVote(item);
 
 			if (vote1 != null && vote2 != null) {
 				squaresSum += Math.pow(vote1 - vote2, 2);
@@ -34,7 +34,7 @@ public class EuclideanDistance implements Measurable {
 	}
 
 	@Override
-	public double getDistanceBetweenItems(List<Voter> voters, Rankable item1, Rankable item2) {
+	public double getDistanceBetweenItems(List<Voter> voters, Item item1, Item item2) {
 
 		double squaresSum = 0;
 		boolean matched = false;
@@ -54,7 +54,7 @@ public class EuclideanDistance implements Measurable {
 			return -1;
 		}
 
-		// we don't need the distance, but a measure of how close two voters are
+		// we don't need the distance, but a measure of how close two items are
 		return 1 / (1 + Math.sqrt(squaresSum));
 	}
 

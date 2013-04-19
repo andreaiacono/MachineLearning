@@ -3,35 +3,35 @@ package org.aitek.ml.demo;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.aitek.ml.core.Book;
 import org.aitek.ml.core.Item;
-import org.aitek.ml.core.Rankable;
-import org.aitek.ml.core.User;
+import org.aitek.ml.core.Reader;
 import org.aitek.ml.core.similarity.ManhattanDistance;
-import org.aitek.ml.core.similarity.Measurable;
+import org.aitek.ml.core.similarity.Similarity;
 
 public class Main {
 
 	public static void main(String[] args) {
 
-		User lisa = new User("Lisa Rose");
-		User gene = new User("Gene Seymour");
-		User michael = new User("Michael Phillips");
-		User claudia = new User("Claudia Puig");
-		User mick = new User("Mick LaSalle");
-		User jack = new User("Jack Matthews");
+		Reader lisa = new Reader("Lisa Rose");
+		Reader gene = new Reader("Gene Seymour");
+		Reader michael = new Reader("Michael Phillips");
+		Reader claudia = new Reader("Claudia Puig");
+		Reader mick = new Reader("Mick LaSalle");
+		Reader jack = new Reader("Jack Matthews");
 
-		List<Rankable> movies = new ArrayList<Rankable>();
-		Rankable lady = new Item("Lady in the Water");
+		List<Item> movies = new ArrayList<Item>();
+		Item lady = new Book("Lady in the Water");
 		movies.add(lady);
-		Rankable snakes = new Item("Snakes on a plane");
+		Item snakes = new Book("Snakes on a plane");
 		movies.add(snakes);
-		Rankable just = new Item("Just my luck");
+		Item just = new Book("Just my luck");
 		movies.add(just);
-		Rankable superman = new Item("Superman returns");
+		Item superman = new Book("Superman returns");
 		movies.add(superman);
-		Rankable night = new Item("Night Listener");
+		Item night = new Book("Night Listener");
 		movies.add(night);
-		Rankable you = new Item("You, me and dupree");
+		Item you = new Book("You, me and dupree");
 		movies.add(you);
 
 		lisa.setVote(lady, 25);
@@ -72,9 +72,9 @@ public class Main {
 		jack.setVote(night, 30);
 		jack.setVote(you, 35);
 
-		Measurable euclidean = new ManhattanDistance();
+		Similarity euclidean = new ManhattanDistance();
 
-		System.out.println("Euclidean Lisa - Gene:" + euclidean.getDistanceBetweenUsers(movies, lisa, gene));
+		System.out.println("Euclidean Lisa - Gene:" + euclidean.getDistanceBetweenVoters(movies, lisa, gene));
 
 	}
 }

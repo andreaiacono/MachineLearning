@@ -1,11 +1,10 @@
 package org.aitek.ml.demo;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
-import org.aitek.ml.core.Rankable;
+import org.aitek.ml.core.Item;
 import org.aitek.ml.core.Voter;
-import org.aitek.ml.core.similarity.Measurable;
+import org.aitek.ml.core.similarity.Similarity;
 import org.aitek.ml.core.similarity.SimilarityFactory;
 import org.aitek.ml.core.similarity.SimilarityFactory.SimilarityMethod;
 import org.aitek.ml.tools.RandomData;
@@ -15,47 +14,34 @@ public class ItemBasedSample {
 	public static void main(String[] args) throws Exception {
 
 		// reads data from disk
-		List<Voter> users = RandomData.createUsers(10);
-		List<Rankable> items = RandomData.createItems(100);
-		RandomData.readDataset(items, users);
-		Rankable anItem = items.get(4);
+		int votersNumber = 10;
+		int itemsNumber = 20;
+		List<Voter> voters = RandomData.createReaders(votersNumber);
+		List<Item> items = RandomData.createItems(itemsNumber);
+		RandomData.readDataset(items, itemsNumber, voters, votersNumber);
 
 		for (SimilarityMethod similarityMethod : SimilarityMethod.values()) {
-			Measurable similarity = SimilarityFactory.getSimilarity(similarityMethod);
-			printGrid(similarity, users, items, 2);
-			System.out.println("The user closer to User n.4 is " + anItem.getClosestRankable(users, items, similarity));
-			// System.out.println("The most desirable item for User n.4 is " + ((Item)
-			// anItem).getMostDesiderableItem(items, users, similarity));
+			Similarity similarity = SimilarityFactory.getSimilarity(similarityMethod);
+			printTopN(similarity, voters, items, 5);
 		}
 
 	}
 
-	private static void printGrid(Measurable measurable, List<Voter> users, List<Rankable> items, int decimalsNumber) {
+	private static void printTopN(Similarity similarity, List<Voter> voters, List<Item> items, int topN) {
 
-		System.out.println("\n\nMethod: " + measurable.getClass().getSimpleName());
-		System.out.print("User\t");
-
-		StringBuffer decimals = new StringBuffer();
-		for (int d = 0; d < decimalsNumber; d++) {
-			decimals.append("#");
-		}
-		DecimalFormat dm = new DecimalFormat("#." + decimals.toString());
-
-		for (int j = 0; j < users.size(); j++) {
-			System.out.print("\tn." + j);
-		}
-		System.out.println();
+		System.out.println("\n\nClosest items with: " + similarity.getClass().getSimpleName());
 
 		for (int j = 0; j < items.size(); j++) {
-			Rankable item1 = items.get(j);
-			System.out.print(item1 + "\t");
-			for (int i = 0; i <= j; i++) {
-				Rankable item2 = items.get(i);
-				double distance = measurable.getDistanceBetweenItems(users, item1, item2);
-				System.out.print(Double.valueOf(dm.format(distance)) + "\t");
+			Item item = items.get(j);
+			List<Item> closestItems = item.getClosestItems(voters, items, similarity, 10);
+			System.out.print(item + ": \t");
+			for (int i = 0; i < closestItems.size() && i < topN; i++) {
+				System.out.print(closestItems.get(i));
+				if (i < closestItems.size() - 1) {
+					System.out.print("\t");
+				}
 			}
-			System.out.println("");
+			System.out.println();
 		}
-
 	}
 }

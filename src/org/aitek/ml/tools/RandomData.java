@@ -6,90 +6,90 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.aitek.ml.core.Book;
 import org.aitek.ml.core.Item;
-import org.aitek.ml.core.Rankable;
-import org.aitek.ml.core.User;
+import org.aitek.ml.core.Reader;
 import org.aitek.ml.core.Voter;
 
 public class RandomData {
 
 	public static final int MAX_VOTE = 5;
 
-	public static List<Rankable> createItems(int n) {
+	public static List<Item> createItems(int n) {
 
-		List<Rankable> items = new ArrayList<Rankable>();
+		List<Item> items = new ArrayList<Item>();
 
 		// no lambdas in Java 7!
 		for (int j = 0; j < n; j++) {
-			items.add(new Item("Item n." + j));
+			items.add(new Book("Item n." + j));
 		}
 
 		return items;
 	}
 
-	public static List<Voter> createUsers(int n) {
+	public static List<Voter> createReaders(int n) {
 
-		List<Voter> users = new ArrayList<Voter>();
+		List<Voter> readers = new ArrayList<Voter>();
 
 		// no lambdas in Java 7!
 		for (int j = 0; j < n; j++) {
-			users.add(new User("User n." + j));
+			readers.add(new Reader("Reader n." + j));
 		}
 
-		return users;
+		return readers;
 	}
 
-	public static void setRandomVote(Voter user, Rankable item) {
+	public static void setRandomVote(Voter reader, Item item) {
 
 		int value = (int) (Math.random() * MAX_VOTE) + 1;
-		user.setVote(item, value);
+		reader.setVote(item, value);
 	}
 
-	public static void setRandomVotesForUser(Voter user, List<Rankable> items) {
+	public static void setRandomVotesForReader(Voter reader, List<Item> items) {
 
-		for (Rankable item : items) {
-			setRandomVote(user, item);
+		for (Item item : items) {
+			setRandomVote(reader, item);
 		}
 	}
 
-	public static void setRandomVotesForItem(Rankable item, List<Voter> users) {
+	public static void setRandomVotesForItem(Item item, List<Voter> readers) {
 
-		for (Voter user : users) {
-			setRandomVote(user, item);
+		for (Voter reader : readers) {
+			setRandomVote(reader, item);
 		}
 	}
 
-	public static void setRandomVotes(List<Rankable> items, List<Voter> users) {
+	public static void setRandomVotes(List<Item> items, List<Voter> readers) {
 
-		for (Voter user : users) {
-			for (Rankable item : items) {
-				setRandomVote(user, item);
+		for (Voter reader : readers) {
+			for (Item item : items) {
+				setRandomVote(reader, item);
 			}
 		}
 	}
 
-	public static String getDataAsCsv(List<Rankable> items, List<Voter> users, boolean setRandomValues) {
+	public static String getDataAsCsv(List<Item> items, List<Voter> voters, boolean setRandomValues) {
 
 		StringBuilder csv = new StringBuilder();
-		for (Voter user : users) {
-			csv.append(user).append(",");
+		for (Voter reader : voters) {
+			csv.append(reader).append(",");
 		}
 		csv.deleteCharAt(csv.length() - 1);
 		csv.append("\n");
 
-		for (Rankable item : items) {
+		for (Item item : items) {
 			csv.append(item).append(",");
-			for (Voter user : users) {
+			for (Voter reader : voters) {
 				if (setRandomValues) {
 					if (Math.random() > 0.4) {
-						csv.append(user.getVote(item)).append(",");
+						csv.append(reader.getVote(item)).append(",");
 					}
 					else {
 						csv.append(" ").append(",");
 					}
 				}
 				else {
-					csv.append(user.getVote(item)).append(",");
+					csv.append(reader.getVote(item)).append(",");
 				}
 			}
 			csv.deleteCharAt(csv.length() - 1);
@@ -100,16 +100,16 @@ public class RandomData {
 		return csv.toString();
 	}
 
-	public static void readDataset(List<Rankable> items, List<Voter> users) throws Exception {
+	public static void readDataset(List<Item> items, int itemsNumber, List<Voter> voters, int votersNumber) throws Exception {
 
 		String data = readTextFile(new File("data.csv"), "UTF-8");
 		String[] lines = data.split("\n");
-		for (int j = 0; j < lines.length - 1; j++) {
+		for (int j = 0; j < lines.length - 1 && j < itemsNumber; j++) {
 
 			String[] votes = lines[j].split(",");
-			for (int i = 0; i < votes.length; i++) {
+			for (int i = 0; i < votes.length && i < votersNumber; i++) {
 				try {
-					users.get(i).setVote(items.get(j), Integer.parseInt(votes[i]));
+					voters.get(i).setVote(items.get(j), Integer.parseInt(votes[i]));
 				}
 				catch (NumberFormatException nfe) {
 					// just not setting vote

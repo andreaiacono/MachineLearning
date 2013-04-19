@@ -2,20 +2,20 @@ package org.aitek.ml.core;
 
 import java.util.List;
 
-import org.aitek.ml.core.similarity.Measurable;
+import org.aitek.ml.core.similarity.Similarity;
 
 public interface Voter {
 
 	public String getName();
 
-	public Integer getVote(Rankable item);
+	public Integer getVote(Item item);
 
-	public void setVote(Rankable item, Integer value);
+	public void setVote(Item item, Integer value);
 
-	public Voter getClosestVoter(List<Voter> voters, List<Rankable> rankables, Measurable measurable);
+	public Voter getClosestVoter(List<Voter> voters, List<Item> items, Similarity measurable);
 
-	public Double getWeightedScoreForItem(Rankable item, List<Rankable> items, List<Voter> voters, Measurable measurable);
+	public Double getWeightedScoreForItem(Item item, List<Item> items, List<Voter> voters, Similarity measurable);
 
-	public List<Voter> getClosestVoters(List<Voter> voters, List<Rankable> items, Measurable measurable, int size);
+	public List<Voter> getClosestVoters(List<Voter> voters, List<Item> items, Similarity measurable, int size);
 
 }

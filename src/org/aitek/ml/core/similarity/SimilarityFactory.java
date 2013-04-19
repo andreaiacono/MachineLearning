@@ -6,7 +6,7 @@ public class SimilarityFactory {
 		EUCLIDEAN, MANHATTAN, PEARSON;
 	}
 
-	public static Measurable getSimilarity(SimilarityMethod type) {
+	public static Similarity getSimilarity(SimilarityMethod type) {
 
 		switch (type) {
 			case EUCLIDEAN:
