@@ -1,9 +1,9 @@
-package org.aitek.ml.core.similarity;
+package org.aitek.ml.similarity;
 
 import java.util.List;
 
-import org.aitek.ml.core.Item;
-import org.aitek.ml.core.Voter;
+import org.aitek.ml.domain.Item;
+import org.aitek.ml.domain.Voter;
 
 public class EuclideanDistance implements Similarity {
 

@@ -1,10 +1,10 @@
-package org.aitek.ml.core;
+package org.aitek.ml.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.aitek.ml.core.similarity.Similarity;
+import org.aitek.ml.similarity.Similarity;
 
 public class Book implements Item {
 

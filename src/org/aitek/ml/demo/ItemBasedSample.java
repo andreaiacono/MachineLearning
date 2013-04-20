@@ -2,11 +2,11 @@ package org.aitek.ml.demo;
 
 import java.util.List;
 
-import org.aitek.ml.core.Item;
-import org.aitek.ml.core.Voter;
-import org.aitek.ml.core.similarity.Similarity;
-import org.aitek.ml.core.similarity.SimilarityFactory;
-import org.aitek.ml.core.similarity.SimilarityFactory.SimilarityMethod;
+import org.aitek.ml.domain.Item;
+import org.aitek.ml.domain.Voter;
+import org.aitek.ml.similarity.Similarity;
+import org.aitek.ml.similarity.SimilarityFactory;
+import org.aitek.ml.similarity.SimilarityFactory.SimilarityMethod;
 import org.aitek.ml.tools.RandomData;
 
 public class ItemBasedSample {

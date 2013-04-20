@@ -6,10 +6,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.aitek.ml.core.Book;
-import org.aitek.ml.core.Item;
-import org.aitek.ml.core.Reader;
-import org.aitek.ml.core.Voter;
+import org.aitek.ml.domain.Book;
+import org.aitek.ml.domain.Item;
+import org.aitek.ml.domain.Reader;
+import org.aitek.ml.domain.Voter;
 
 public class RandomData {
 

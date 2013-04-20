@@ -1,4 +1,4 @@
-package org.aitek.ml.core.similarity;
+package org.aitek.ml.similarity;
 
 public class SimilarityFactory {
 

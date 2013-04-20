@@ -1,4 +1,4 @@
-package org.aitek.ml.core;
+package org.aitek.ml.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.aitek.ml.core.similarity.Similarity;
+import org.aitek.ml.similarity.Similarity;
 
 public class Reader implements Voter {
 

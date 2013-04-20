@@ -3,11 +3,11 @@ package org.aitek.ml.demo;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.aitek.ml.core.Book;
-import org.aitek.ml.core.Item;
-import org.aitek.ml.core.Reader;
-import org.aitek.ml.core.similarity.ManhattanDistance;
-import org.aitek.ml.core.similarity.Similarity;
+import org.aitek.ml.domain.Book;
+import org.aitek.ml.domain.Item;
+import org.aitek.ml.domain.Reader;
+import org.aitek.ml.similarity.ManhattanDistance;
+import org.aitek.ml.similarity.Similarity;
 
 public class Main {
 
