@@ -1,8 +1,6 @@
 package org.aitek.ml.tools;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +100,7 @@ public class RandomData {
 
 	public static void readDataset(List<Item> items, int itemsNumber, List<Voter> voters, int votersNumber) throws Exception {
 
-		String data = readTextFile(new File("data.csv"), "UTF-8");
+		String data = Utils.readTextFile(new File("data.csv"), "UTF-8");
 		String[] lines = data.split("\n");
 		for (int j = 0; j < lines.length - 1 && j < itemsNumber; j++) {
 
@@ -119,28 +117,4 @@ public class RandomData {
 
 	}
 
-	/**
-	 * reads a text file
-	 * 
-	 * @param f the file to read
-	 * @param encoding the encoding of the file
-	 * @return the content of the file
-	 * @throws Exception
-	 */
-	public static String readTextFile(File f, String encoding) throws Exception {
-
-		InputStreamReader reader = null;
-		StringBuilder content = new StringBuilder();
-		try {
-			reader = new InputStreamReader(new FileInputStream(f), encoding);
-			char data[] = new char[4096];
-			while ((reader.read(data)) != -1) {
-				content.append(data);
-			}
-		}
-		finally {
-			if (reader != null) reader.close();
-		}
-		return content.toString();
-	}
 }
