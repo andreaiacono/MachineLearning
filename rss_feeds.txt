@@ -1,0 +1,20 @@
+The Guardian|http://feeds.guardian.co.uk/theguardian/world/rss
+BBC News|http://feeds.bbci.co.uk/news/world/rss.xml
+TechCrunch|http://feeds.feedburner.com/TechCrunch?fmt=xml
+Gothamist|http://feeds.gothamistllc.com/gothamist05?fmt=xml
+Huffington Post|http://www.huffingtonpost.com/feeds/verticals/italy/blog.xml
+Huffington Post|http://www.huffingtonpost.com/feeds/verticals/italy/news.xml
+Gawker|http://feeds.gawker.com/Gawker/full?fmt=xml
+Mashable|http://feeds.mashable.com/Mashable?fmt=xml
+Asr Technica|http://feeds.arstechnica.com/arstechnica/index?fmt=xml
+The Verge|http://www.theverge.com/rss/index.xml
+Gizmodo|http://feeds.gawker.com/Gizmodo/full?fmt=xml
+New York Times|http://bits.blogs.nytimes.com/feed/
+Laughing squid|http://laughingsquid.com/feed/
+Zero hedge|http://feeds.feedburner.com/zerohedge/feed?fmt=xml
+Pauk Krugman - New York Times|http://krugman.blogs.nytimes.com/feed/
+Thomas Friedman - New York Times|http://topics.nytimes.com/top/opinion/editorialsandoped/oped/columnists/thomaslfriedman/index.html?rss=1
+Engadget|http://www.engadget.com/rss.xml
+CNN|http://rss.cnn.com/rss/cnn_allpolitics.rss?fmt=xml
+Joystiq|http://www.joystiq.com/rss.xml
+CNN Tech|http://rss.cnn.com/rss/cnn_tech.rss?fmt=xml
