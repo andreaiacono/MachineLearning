@@ -2,6 +2,8 @@ package org.aitek.ml.tools;
 
 import java.io.File;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,17 +21,19 @@ public class FeedReader {
 	public FeedReader() throws Exception {
 
 		sqLiteWrapper = new SQLiteWrapper();
-		sqLiteWrapper.createTable();
+		sqLiteWrapper.createTables();
 		String data = Utils.readTextFile(new File("rss_feeds.txt"), "UTF-8");
 		String[] lines = data.split("\n");
 		for (String feed : lines) {
 			insertFeedWords(feed.split("\\|")[0], new URL(feed.split("\\|")[1]));
 		}
+
 	}
 
 	public void insertFeedWords(String feedName, URL url) {
 
 		System.out.println("Inserting " + feedName);
+		Map<String, Integer> feedWords = new HashMap<String, Integer>();
 
 		try {
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -51,14 +55,25 @@ public class FeedReader {
 				// String feed = getElementValue(element, idTag);
 				String feedContent = getElementValue(element, descriptionTag) + getElementValue(element, titleTag);
 				org.jsoup.nodes.Document parsedHtml = Jsoup.parse(feedContent);
-				String[] words = parsedHtml.body().text().replaceAll("[\\.,;\":!?-]", " ").replaceAll("'", "").toLowerCase().split(" ");
+				String[] words = parsedHtml.body().text().replaceAll("[\\.,;\":!?-]", " ").replaceAll("'", "").replaceAll("\\(", "").replaceAll("\\)", "").toLowerCase().split(" ");
 				for (String word : words) {
 					if (word.trim().length() > 0) {
-						String insertStatement = "INSERT INTO Words (feed, word) VALUES ('" + feedName + "', '" + word + "')";
-						// System.out.println(insertStatement);
-						sqLiteWrapper.insert(insertStatement);
+
+						if (feedWords.get(word) == null) {
+							feedWords.put(word, 1);
+						}
+						else {
+							feedWords.put(word, feedWords.get(word) + 1);
+						}
 					}
 				}
+			}
+
+			for (String word : feedWords.keySet()) {
+
+				String insertStatement = "INSERT INTO Words (feed, word, occurrences) VALUES ('" + feedName + "', '" + word + "', " + feedWords.get(word) + ");";
+				sqLiteWrapper.insert(insertStatement);
+				System.out.println(insertStatement);
 			}
 			sqLiteWrapper.commit();
 		}

@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SQLiteWrapper {
 
@@ -19,12 +21,12 @@ public class SQLiteWrapper {
 		connection.setAutoCommit(false);
 	}
 
-	public void createTable() throws Exception {
+	public void createTables() throws Exception {
 
 		Statement statement = null;
 		try {
 			statement = connection.createStatement();
-			statement.executeUpdate("CREATE TABLE words (feed varchar(1024), word VARCHAR(256));");
+			statement.executeUpdate("CREATE TABLE words (feed varchar(1024), word VARCHAR(256), occurrences INT);");
 		}
 		catch (SQLException e) {
 			System.out.println("An error has occurred creating table: " + e.getMessage());
@@ -34,6 +36,21 @@ public class SQLiteWrapper {
 				statement.close();
 			}
 		}
+	}
+
+	public static Map<String, List<String>> loadData() throws Exception {
+
+		Map<String, List<String>> feedsWords = new HashMap<String, List<String>>();
+		SQLiteWrapper sqLiteWrapper = new SQLiteWrapper();
+		List<String> feeds = sqLiteWrapper.getFeeds();
+
+		for (String feed : feeds) {
+
+			List<String> words = sqLiteWrapper.getWords(feed);
+			feedsWords.put(feed, words);
+		}
+
+		return feedsWords;
 	}
 
 	public List<String> getFeeds() throws Exception {
@@ -75,6 +92,34 @@ public class SQLiteWrapper {
 
 			while (results.next()) {
 				words.add(results.getString("word"));
+			}
+		}
+		catch (SQLException e) {
+			System.out.println("An error has occurred retrieving words: " + e.getMessage());
+		}
+		finally {
+			if (results != null) {
+				results.close();
+			}
+			if (statement != null) {
+				statement.close();
+			}
+		}
+
+		return words;
+	}
+
+	public Map<String, Integer> getWordsCount(String feed) throws Exception {
+
+		Map<String, Integer> words = new HashMap<String, Integer>();
+		Statement statement = null;
+		ResultSet results = null;
+		try {
+			statement = connection.createStatement();
+			results = statement.executeQuery("SELECT word, occurrences FROM words WHERE feed ='" + feed + "';");
+
+			while (results.next()) {
+				words.put(results.getString("word"), results.getInt("word"));
 			}
 		}
 		catch (SQLException e) {
