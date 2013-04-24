@@ -7,8 +7,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import org.aitek.ml.clustering.Feed;
+import org.aitek.ml.clustering.FeedWord;
+import org.aitek.ml.clustering.FeedsData;
 
 public class SQLiteWrapper {
 
@@ -38,19 +44,18 @@ public class SQLiteWrapper {
 		}
 	}
 
-	public static Map<String, List<String>> loadData() throws Exception {
+	public static FeedsData loadData() throws Exception {
 
-		Map<String, List<String>> feedsWords = new HashMap<String, List<String>>();
+		FeedsData data = new FeedsData();
 		SQLiteWrapper sqLiteWrapper = new SQLiteWrapper();
 		List<String> feeds = sqLiteWrapper.getFeeds();
 
 		for (String feed : feeds) {
 
-			List<String> words = sqLiteWrapper.getWords(feed);
-			feedsWords.put(feed, words);
+			data.setFeed(new Feed(feed, sqLiteWrapper.getWords(feed)));
 		}
 
-		return feedsWords;
+		return data;
 	}
 
 	public List<String> getFeeds() throws Exception {
@@ -81,17 +86,17 @@ public class SQLiteWrapper {
 		return words;
 	}
 
-	public List<String> getWords(String feed) throws Exception {
+	public Set<FeedWord> getWords(String feed) throws Exception {
 
-		List<String> words = new ArrayList<String>();
+		Set<FeedWord> words = new HashSet<FeedWord>();
 		Statement statement = null;
 		ResultSet results = null;
 		try {
 			statement = connection.createStatement();
-			results = statement.executeQuery("SELECT word FROM words WHERE feed ='" + feed + "';");
+			results = statement.executeQuery("SELECT word, occurrences FROM words WHERE feed ='" + feed + "';");
 
 			while (results.next()) {
-				words.add(results.getString("word"));
+				words.add(new FeedWord(results.getString("word"), results.getInt("occurrences")));
 			}
 		}
 		catch (SQLException e) {

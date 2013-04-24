@@ -73,7 +73,7 @@ public class FeedReader {
 
 				String insertStatement = "INSERT INTO Words (feed, word, occurrences) VALUES ('" + feedName + "', '" + word + "', " + feedWords.get(word) + ");";
 				sqLiteWrapper.insert(insertStatement);
-				System.out.println(insertStatement);
+				// System.out.println(insertStatement);
 			}
 			sqLiteWrapper.commit();
 		}
