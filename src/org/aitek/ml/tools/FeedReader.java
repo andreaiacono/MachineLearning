@@ -22,9 +22,10 @@ public class FeedReader {
 
 		sqLiteWrapper = new SQLiteWrapper();
 		sqLiteWrapper.createTables();
-		String data = Utils.readTextFile(new File("rss_feeds.txt"), "UTF-8");
+		String data = Utils.readTextFile(new File("resources/rss_feeds.txt"), "UTF-8");
 		String[] lines = data.split("\n");
 		for (String feed : lines) {
+			if (feed.length() == 0) break;
 			insertFeedWords(feed.split("\\|")[0], new URL(feed.split("\\|")[1]));
 		}
 

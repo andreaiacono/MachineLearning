@@ -23,7 +23,7 @@ public class SQLiteWrapper {
 	public SQLiteWrapper() throws Exception {
 
 		Class.forName("org.sqlite.JDBC");
-		connection = DriverManager.getConnection("jdbc:sqlite:feeds.db");
+		connection = DriverManager.getConnection("jdbc:sqlite:resources/feeds.db");
 		connection.setAutoCommit(false);
 	}
 

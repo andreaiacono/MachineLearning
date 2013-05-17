@@ -1,2 +1,6 @@
 bin/
 feeds.db
+resources/testdata/
+resources/k-means_output/
+resources/kmeans.cfg
+resources/feeds.db

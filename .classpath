@@ -4,5 +4,14 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_04"/>
 	<classpathentry kind="lib" path="/home/andrea/Programming/java/lib/sqlite-jdbc-3.7.2.jar"/>
 	<classpathentry kind="lib" path="/home/andrea/Programming/java/lib/jsoup-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/opt/java/hadoop-1.1.2/hadoop-core-1.1.2.jar"/>
+	<classpathentry kind="lib" path="/opt/java/lib/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="/opt/java/lib/commons-configuration-1.9.jar"/>
+	<classpathentry kind="lib" path="/opt/java/lib/commons-lang-2.4.jar"/>
+	<classpathentry kind="lib" path="/opt/java/mahout-distribution-0.7/mahout-core-0.7.jar" sourcepath="/home/andrea/Programming/java/lib/mahout-distribution-0.7/core/src/main/java"/>
+	<classpathentry kind="lib" path="/opt/java/mahout-distribution-0.7/mahout-integration-0.7.jar" sourcepath="/home/andrea/Programming/java/lib/mahout-distribution-0.7/integration/src/main/java"/>
+	<classpathentry kind="lib" path="/opt/java/mahout-distribution-0.7/mahout-math-0.7.jar" sourcepath="/home/andrea/Programming/java/lib/mahout-distribution-0.7/math/src/main/java"/>
+	<classpathentry kind="lib" path="/opt/java/mahout-distribution-0.7/mahout-core-0.7-job.jar"/>
+	<classpathentry kind="lib" path="/home/andrea/Programming/java/weka-3-6-9/weka.jar" sourcepath="/opt/java/weka-3-6-9/weka-src.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

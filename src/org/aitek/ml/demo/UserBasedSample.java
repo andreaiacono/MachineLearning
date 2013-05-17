@@ -34,7 +34,7 @@ public class UserBasedSample {
 	private static void printGrid(Similarity measurable, List<Voter> readers, List<Item> items, int decimalsNumber) {
 
 		System.out.println("\n\nMethod: " + measurable.getClass().getSimpleName());
-		System.out.print("Reader\t");
+		System.out.print("Reader|Item    ");
 
 		StringBuffer decimals = new StringBuffer();
 		for (int d = 0; d < decimalsNumber; d++) {
