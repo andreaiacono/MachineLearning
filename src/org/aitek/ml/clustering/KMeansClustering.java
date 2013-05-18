@@ -19,6 +19,8 @@ import org.apache.mahout.math.Vector;
 
 public class KMeansClustering {
 
+	private final String DIRECTORY_PREFIX = "resources/clustering/";
+
 	public List<Vector> getPoints(double[][] raw) {
 
 		List<Vector> points = new ArrayList<Vector>();
@@ -35,11 +37,11 @@ public class KMeansClustering {
 
 		List<Vector> vectors = getPoints(points);
 
-		File testData = new File("resources/testdata");
+		File testData = new File(DIRECTORY_PREFIX + "testdata");
 		if (!testData.exists()) {
 			testData.mkdir();
 		}
-		testData = new File("resources/testdata/points");
+		testData = new File(DIRECTORY_PREFIX + "testdata/points");
 		if (!testData.exists()) {
 			testData.mkdir();
 		}
@@ -47,9 +49,9 @@ public class KMeansClustering {
 		// writes points data to HDFS
 		Configuration conf = new Configuration();
 		FileSystem fs = FileSystem.get(conf);
-		ClusterHelper.writePointsToFile(vectors, conf, new Path("resources/testdata/points/file1"));
+		ClusterHelper.writePointsToFile(vectors, conf, new Path(DIRECTORY_PREFIX + "testdata/points/file1"));
 
-		Path path = new Path("resources/testdata/clusters/part-00000");
+		Path path = new Path(DIRECTORY_PREFIX + "testdata/clusters/part-00000");
 		SequenceFile.Writer writer = new SequenceFile.Writer(fs, conf, path, Text.class, Kluster.class);
 
 		for (int i = 0; i < clusters; i++) {
@@ -60,14 +62,14 @@ public class KMeansClustering {
 		writer.close();
 
 		// deletes existing output before computing
-		Path output = new Path("resources/k-means_output");
+		Path output = new Path(DIRECTORY_PREFIX + "k-means_output");
 		HadoopUtil.delete(conf, output);
 
 		// runs the clustering algorithm on hadoop
-		KMeansDriver.run(conf, new Path("resources/testdata/points"), new Path("resources/testdata/clusters"), output, new EuclideanDistanceMeasure(), 0.001, 10, true, 0.0, false);
+		KMeansDriver.run(conf, new Path(DIRECTORY_PREFIX + "testdata/points"), new Path(DIRECTORY_PREFIX + "testdata/clusters"), output, new EuclideanDistanceMeasure(), 0.001, 10, true, 0.0, false);
 
 		// reads the results
-		SequenceFile.Reader reader = new SequenceFile.Reader(fs, new Path("resources/k-means_output/" + Kluster.CLUSTERED_POINTS_DIR + "/part-m-00000"), conf);
+		SequenceFile.Reader reader = new SequenceFile.Reader(fs, new Path(DIRECTORY_PREFIX + "k-means_output/" + Kluster.CLUSTERED_POINTS_DIR + "/part-m-00000"), conf);
 
 		GnuPlotUtils.plot(reader);
 		reader.close();

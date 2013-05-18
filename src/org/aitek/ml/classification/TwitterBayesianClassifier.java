@@ -1,172 +1,184 @@
 package org.aitek.ml.classification;
 
+/**
+ * Java program for classifying short text messages into two classes.
+ */
+
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 
+import weka.classifiers.Classifier;
+import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
-import weka.classifiers.meta.FilteredClassifier;
+import weka.core.Attribute;
+import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
-import weka.core.converters.DatabaseLoader;
+import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
 public class TwitterBayesianClassifier {
 
-	private final FilteredClassifier model;
-	private boolean isTrained;
+	private Instances trainingData = null;
+	private final StringToWordVector wordCounterFilter = new StringToWordVector();
+	private final Classifier classifier = new NaiveBayes();
 
+	// the classification types defined
 	public enum ClassName {
 		event, health, camera, apparel, art, tech, home
 	}
 
-	public TwitterBayesianClassifier() {
+	public TwitterBayesianClassifier() throws Exception {
 
-		model = new FilteredClassifier();
-		model.setFilter(new StringToWordVector());
-		model.setClassifier(new NaiveBayes());
+		// creates the structure of data
+		FastVector attributes = new FastVector(2);
+		attributes.addElement(new Attribute("tweet", (FastVector) null));
+		FastVector classValues = new FastVector(ClassName.values().length);
+		for (ClassName className : ClassName.values()) {
+			classValues.addElement(className.toString());
+		}
+		attributes.addElement(new Attribute("class", classValues));
+
+		// creates the dataset
+		trainingData = new Instances("TweetsClassification", attributes, 600);
+		trainingData.setClassIndex(1);
 	}
 
 	/**
+	 * trains the classifier with a tweet
 	 * 
-	 * @param url the JDBC URL to access the database (e.g.: "jdbc:mysql://localhost:3306/db_name")
-	 * @param username the user used to access the database
-	 * @param password the password for the user
-	 * @param query the query to retrieve data (e.g.: "SELECT * FROM data")
+	 * @param tweet the content of the tweet
+	 * @param classValue the class related to this tweet
 	 * @throws Exception
 	 */
-	public void train(String url, String username, String password, String query) throws Exception {
+	public void trainClassifier(String tweet, String className) throws Exception {
 
-		DatabaseLoader loader = new DatabaseLoader();
-		loader.setSource(url, username, password);
-		loader.setQuery(query);
-		trainClassifier(loader.getDataSet());
-		isTrained = true;
+		// creates the instance for this message
+		Instance instance = makeInstance(tweet, trainingData);
+		instance.setClassValue(className);
+
+		// adds it to the training data.
+		trainingData.add(instance);
 	}
 
 	/**
-	 * trains the classifier with data loaded from an ARFF file
+	 * classifies a new tweet
 	 * 
-	 * @param file the file ARFF containing the data
+	 * @param tweet the content of the tweet
 	 * @throws Exception
 	 */
-	public Instances train(File file) throws Exception {
+	public ClassName classifyMessage(String tweet) throws Exception {
 
-		// reads data from file
-		BufferedReader trainReader = new BufferedReader(new FileReader(file));
-		Instances trainingInstances = new Instances(trainReader);
+		// checks if the classifier has been trained
+		if (trainingData.numInstances() == 0) {
+			throw new Exception("The classifier hasn't been trained yet.");
+		}
 
-		// the class of the tweet is 1-th field (0 based)
-		trainingInstances.setClassIndex(1);
+		// avoid inserting the new tweet into the training set
+		Instances testset = trainingData.stringFreeStructure();
 
-		// trains the classifier with given data
-		trainClassifier(trainingInstances);
+		// classifies the new tweet
+		wordCounterFilter.input(makeInstance(tweet, testset));
+		double predicted = classifier.classifyInstance(wordCounterFilter.output());
+		ClassName className = ClassName.values()[(int) predicted];
 
-		isTrained = true;
-		return trainingInstances;
+		System.out.println("The tweet [" + tweet + "] has been classified as " + className.toString());
+		return className;
 	}
 
 	/**
-	 * trains the classifier with the related instances
-	 * 
-	 * @param trainingInstances
-	 * @throws Exception
-	 */
-	private void trainClassifier(Instances trainingInstances) throws Exception {
-
-		// trains the classifier with given data
-		model.buildClassifier(trainingInstances);
-	}
-
-	public void test() {
-
-	}
-
-	/**
-	 * classifies the tweet using the trained classifier
+	 * converts a tweet into an instance
 	 * 
 	 * @param tweet
+	 * @param data
 	 * @return
-	 * @throws Exception
 	 */
-	public Instance classifyTweet(String tweet) throws Exception {
+	private Instance makeInstance(String tweet, Instances dat2a) {
 
-		if (!isTrained) {
-			throw new Exception("The classifier is not trained. Call method 'train()' before calling 'classifyTweet()'.");
-		}
-		Instance tweetInstance = new Instance(1);
-		// tweetInstance.setClassMissing();
-		double cls = model.classifyInstance(tweetInstance);
-		tweetInstance.setClassValue(cls);
+		// Create instance of length two.
+		Instance instance = new Instance(2);
 
-		return tweetInstance;
+		// Set value for message attribute
+		Attribute messageAtt = trainingData.attribute("tweet");
+		instance.setValue(messageAtt, messageAtt.addStringValue(tweet));
+
+		// Give instance access to attribute information from the dataset.
+		instance.setDataset(trainingData);
+		return instance;
 	}
 
 	/**
-	 * classifies a file containing tweets using the trained classifier
+	 * trains the classifier with a file containing tweets and classes. The format has to be:
+	 * 'TWEET_CONTENT',CLASS\n
 	 * 
-	 * @param classifyFile
-	 * @return
+	 * @param filename
 	 * @throws Exception
 	 */
-	public Instances classifyTweets(File classifyFile) throws Exception {
+	public void trainFromTweetsFile(String filename) throws Exception {
 
-		BufferedReader classifyReader = new BufferedReader(new FileReader(classifyFile));
-		Instances classifyInstances = new Instances(classifyReader);
-		classifyInstances.setClassIndex(0);
-		for (int i = 0; i < classifyInstances.numInstances(); i++) {
-			Instance instance = classifyInstances.instance(i);
-			instance.setClassMissing();
-			double cls = model.classifyInstance(instance);
-			instance.setClassValue(cls);
+		BufferedReader reader = null;
+		try {
+
+			// reads from file
+			reader = new BufferedReader(new FileReader(filename));
+			String line;
+			while ((line = reader.readLine()) != null) {
+
+				// reads the tweet and the associated class
+				String[] tokens = line.split("',");
+				String tweet = tokens[0].substring(1);
+				String className = tokens[1];
+
+				// updates the training data
+				trainClassifier(tweet, className);
+				// System.out.println("Trained classifier with: [" + tweet + "] as " + className);
+			}
+
+			// initializes the filter, generate word counts and rebuild classifier
+			wordCounterFilter.setInputFormat(trainingData);
+			Instances filteredData = Filter.useFilter(trainingData, wordCounterFilter);
+			classifier.buildClassifier(filteredData);
+		}
+		finally {
+			if (reader != null) reader.close();
+		}
+	}
+
+	/**
+	 * trains the classifier with a single tweet and the related class
+	 * 
+	 * @param tweet
+	 * @param className
+	 */
+	public void trainFromTweet(String tweet, ClassName className) throws Exception {
+
+		// and updates the training data
+		trainClassifier(tweet, className.toString());
+	}
+
+	/**
+	 * outputs some info about the classifier
+	 * 
+	 * @throws Exception
+	 */
+	public void getModel() throws Exception {
+
+		Evaluation eTest = new Evaluation(trainingData);
+		eTest.evaluateModel(classifier, trainingData);
+		String strSummary = eTest.toSummaryString();
+		System.out.println(strSummary);
+		// System.err.println(m_Classifier);
+
+		// outputs the confusion matrix
+		double[][] cmMatrix = eTest.confusionMatrix();
+		for (int row_i = 0; row_i < cmMatrix.length; row_i++) {
+			for (int col_i = 0; col_i < cmMatrix.length; col_i++) {
+				System.out.print(cmMatrix[row_i][col_i]);
+				System.out.print("|");
+			}
+			System.out.println();
 		}
 
-		return classifyInstances;
 	}
-
-	public FilteredClassifier getModel() {
-
-		return model;
-	}
-
-	// /**
-	// * @param args
-	// */
-	// public static void main(String[] args) throws Exception {
-	//
-	// // WekaUtils.CsvToArff("resources/tweets_train.csv", "resources/tweets_train.arff", new
-	// // String[] { "-N", "1" });
-	// // WekaUtils.CsvToArff("resources//tweets_to_be_classified.csv",
-	// // "resources//tweets_to_be_classified.arff", new String[] {});
-	//
-	// // reads training file
-	// BufferedReader trainReader = new BufferedReader(new
-	// FileReader("resources/tweets_train.arff"));
-	// Instances trainInsts = new Instances(trainReader);
-	//
-	// // creates the bayesian classifier
-	// FilteredClassifier model = new FilteredClassifier();
-	// StringToWordVector stringtowordvector = new StringToWordVector();
-	// stringtowordvector.setUseStoplist(true);
-	// model.setFilter(new StringToWordVector());
-	// model.setClassifier(new NaiveBayes());
-	//
-	// // trains the classifier with given data
-	// model.buildClassifier(trainInsts);
-	// // System.out.println(model);
-	//
-	// BufferedReader classifyReader = new BufferedReader(new
-	// FileReader("resources/tweets_to_be_classified.arff"));
-	// Instances classifyInsts = new Instances(classifyReader);
-	// classifyInsts.setClassIndex(0);
-	// for (int i = 0; i < classifyInsts.numInstances(); i++) {
-	// Instance instance = classifyInsts.instance(i);
-	// instance.setClassMissing();
-	// double cls = model.classifyInstance(instance);
-	// instance.setClassValue(cls);
-	// }
-	// System.out.println("CLASIFICATION:" + classifyInsts);
-	//
-	// }
 
 }

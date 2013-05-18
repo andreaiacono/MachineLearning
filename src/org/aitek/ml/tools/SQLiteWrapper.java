@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.aitek.ml.clustering.Feed;
-import org.aitek.ml.clustering.FeedWord;
-import org.aitek.ml.clustering.FeedsData;
+import org.aitek.ml.clustering.feeds.Feed;
+import org.aitek.ml.clustering.feeds.FeedWord;
+import org.aitek.ml.clustering.feeds.FeedsData;
 
 public class SQLiteWrapper {
 
@@ -23,7 +23,7 @@ public class SQLiteWrapper {
 	public SQLiteWrapper() throws Exception {
 
 		Class.forName("org.sqlite.JDBC");
-		connection = DriverManager.getConnection("jdbc:sqlite:resources/feeds.db");
+		connection = DriverManager.getConnection("jdbc:sqlite:resources/clustering/feeds.db");
 		connection.setAutoCommit(false);
 	}
 

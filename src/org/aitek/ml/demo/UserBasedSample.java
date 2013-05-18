@@ -15,7 +15,7 @@ public class UserBasedSample {
 
 	public static void main(String[] args) throws Exception {
 
-		// reads data from disk
+		// reads saved data
 		int readersNumber = 10;
 		int itemsNumber = 100;
 		List<Voter> readers = RandomData.createReaders(readersNumber);

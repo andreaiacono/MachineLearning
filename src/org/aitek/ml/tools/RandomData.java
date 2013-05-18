@@ -100,7 +100,7 @@ public class RandomData {
 
 	public static void readDataset(List<Item> items, int itemsNumber, List<Voter> voters, int votersNumber) throws Exception {
 
-		String data = Utils.readTextFile(new File("resources/data.csv"), "UTF-8");
+		String data = Utils.readTextFile(new File("resources/collaborative_filtering/data.csv"), "UTF-8");
 		String[] lines = data.split("\n");
 		for (int j = 0; j < lines.length - 1 && j < itemsNumber; j++) {
 

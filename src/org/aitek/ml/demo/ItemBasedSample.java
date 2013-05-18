@@ -13,7 +13,7 @@ public class ItemBasedSample {
 
 	public static void main(String[] args) throws Exception {
 
-		// reads data from disk
+		// reads saved data
 		int votersNumber = 10;
 		int itemsNumber = 20;
 		List<Voter> voters = RandomData.createReaders(votersNumber);

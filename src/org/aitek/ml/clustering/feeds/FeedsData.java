@@ -1,4 +1,4 @@
-package org.aitek.ml.clustering;
+package org.aitek.ml.clustering.feeds;
 
 import java.util.HashMap;
 import java.util.HashSet;
