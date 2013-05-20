@@ -31,4 +31,30 @@ public class Utils {
 		return content.toString();
 	}
 
+	public static double getMax(double[] data) {
+
+		double max = 0;
+		for (int i = 0; i < data.length; i++) {
+
+			if (data[i] > max) {
+				max = data[i];
+			}
+		}
+
+		return max;
+	}
+
+	public static double getMin(double[] data) {
+
+		double min = 1000000;
+		for (int i = 0; i < data.length; i++) {
+
+			if (data[i] < min) {
+				min = data[i];
+			}
+		}
+
+		return min;
+	}
+
 }
