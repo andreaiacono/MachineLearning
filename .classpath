@@ -13,5 +13,7 @@
 	<classpathentry kind="lib" path="/opt/java/mahout-distribution-0.7/mahout-math-0.7.jar" sourcepath="/home/andrea/Programming/java/lib/mahout-distribution-0.7/math/src/main/java"/>
 	<classpathentry kind="lib" path="/opt/java/mahout-distribution-0.7/mahout-core-0.7-job.jar"/>
 	<classpathentry kind="lib" path="/home/andrea/Programming/java/weka-3-6-9/weka.jar" sourcepath="/opt/java/weka-3-6-9/weka-src.jar"/>
+	<classpathentry kind="lib" path="/opt/java/lib/Jenes.2.1.0.r758.jar" sourcepath="/opt/java/lib/Jenes.2.1.0.r758.src.zip"/>
+	<classpathentry kind="lib" path="/opt/java/lib/neuroph-core-2.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
