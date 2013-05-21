@@ -1,4 +1,4 @@
 MachineLearning
 ===============
 
-A set of tools for Machine Learning
+Experimenting various tools for Machine Learning (Mahout, Neuroph, Jenes, Weka).
