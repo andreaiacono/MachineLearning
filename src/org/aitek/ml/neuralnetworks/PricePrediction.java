@@ -45,7 +45,7 @@ public class PricePrediction {
 		}
 		System.out.println("\nTraining network, please wait...");
 		neuralNetwork.learn(trainingSet);
-		System.out.println("PricePrediction Neural network is ready.\n");
+		System.out.println("PricePrediction neural network is ready.\n");
 	}
 
 	/**

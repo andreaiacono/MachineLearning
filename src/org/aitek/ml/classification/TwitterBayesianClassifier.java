@@ -51,7 +51,7 @@ public class TwitterBayesianClassifier {
 	 * @param classValue the class related to this tweet
 	 * @throws Exception
 	 */
-	public void trainClassifier(String tweet, String className) throws Exception {
+	public void addTweetToTrainingSet(String tweet, String className) throws Exception {
 
 		// creates the instance for this message
 		Instance instance = makeInstance(tweet, trainingData);
@@ -95,14 +95,14 @@ public class TwitterBayesianClassifier {
 	 */
 	private Instance makeInstance(String tweet, Instances dat2a) {
 
-		// Create instance of length two.
+		// creates instance of length two.
 		Instance instance = new Instance(2);
 
-		// Set value for message attribute
+		// sets the value for message attribute
 		Attribute messageAtt = trainingData.attribute("tweet");
 		instance.setValue(messageAtt, messageAtt.addStringValue(tweet));
 
-		// Give instance access to attribute information from the dataset.
+		// gives instance access to the attribute information from the dataset
 		instance.setDataset(trainingData);
 		return instance;
 	}
@@ -130,7 +130,7 @@ public class TwitterBayesianClassifier {
 				String className = tokens[1];
 
 				// updates the training data
-				trainClassifier(tweet, className);
+				addTweetToTrainingSet(tweet, className);
 				// System.out.println("Trained classifier with: [" + tweet + "] as " + className);
 			}
 
@@ -153,7 +153,7 @@ public class TwitterBayesianClassifier {
 	public void trainFromTweet(String tweet, ClassName className) throws Exception {
 
 		// and updates the training data
-		trainClassifier(tweet, className.toString());
+		addTweetToTrainingSet(tweet, className.toString());
 	}
 
 	/**
