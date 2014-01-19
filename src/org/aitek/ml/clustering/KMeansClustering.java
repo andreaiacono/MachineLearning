@@ -71,7 +71,7 @@ public class KMeansClustering {
 		// reads the results
 		SequenceFile.Reader reader = new SequenceFile.Reader(fs, new Path(DIRECTORY_PREFIX + "k-means_output/" + Kluster.CLUSTERED_POINTS_DIR + "/part-m-00000"), conf);
 
-		GnuPlotUtils.plot(reader);
+		GnuPlotUtils.output(reader);
 		reader.close();
 
 	}

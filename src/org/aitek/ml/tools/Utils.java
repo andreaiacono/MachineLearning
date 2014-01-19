@@ -1,7 +1,11 @@
 package org.aitek.ml.tools;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 
 public class Utils {
@@ -57,4 +61,38 @@ public class Utils {
 		return min;
 	}
 
+	public static void changeEncoding(String filename, String from, String to) throws Exception {
+
+		BufferedReader reader = null;
+		StringBuffer content = new StringBuffer();
+		try {
+
+			// reads from file
+			reader = new BufferedReader(new FileReader(filename));
+			String line = null;
+			do {
+				line = reader.readLine();
+				if (line == null) break;
+				content.append(new String(line.getBytes(), from)).append("\n");
+			} while (true);
+		}
+		finally {
+			if (reader != null) reader.close();
+		}
+
+		BufferedWriter writer = null;
+		try {
+
+			writer = new BufferedWriter(new FileWriter(filename));
+			writer.write(content.toString());
+		}
+		finally {
+			if (writer != null) writer.close();
+		}
+	}
+
+	public static void main(String[] args) throws Exception {
+
+		changeEncoding("/home/andrea/poinx/app/views/pages/privacy3.cpt", "US-ASCII", "UTF-8");
+	}
 }

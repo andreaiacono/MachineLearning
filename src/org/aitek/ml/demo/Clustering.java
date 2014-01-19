@@ -8,7 +8,7 @@ public class Clustering {
 
 	public static void main(String[] args) throws Exception {
 
-		KMeansClustering kmenClustering = new KMeansClustering();
-		kmenClustering.cluster(points, 3);
+		KMeansClustering kmeanClustering = new KMeansClustering();
+		kmeanClustering.cluster(points, 3);
 	}
 }

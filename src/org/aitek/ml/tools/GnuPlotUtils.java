@@ -14,7 +14,7 @@ import org.apache.mahout.clustering.classify.WeightedVectorWritable;
 
 public class GnuPlotUtils {
 
-	private static final String KMEANS_FILE = "resources/kmeans.cfg";
+	private static final String KMEANS_FILE = "resources/clustering/kmeans.cfg";
 
 	private static void writeFile(String content, String filename) throws Exception {
 
@@ -42,7 +42,7 @@ public class GnuPlotUtils {
 		}
 	}
 
-	public static void plot(Reader reader) throws Exception {
+	public static void output(Reader reader) throws Exception {
 
 		IntWritable key = new IntWritable();
 		WeightedVectorWritable value = new WeightedVectorWritable();

@@ -29,16 +29,16 @@ public class ItemBasedSample {
 
 	private static void printTopN(Similarity similarity, List<Voter> voters, List<Item> items, int topN) {
 
-		System.out.println("\n\nClosest items with: " + similarity.getClass().getSimpleName());
+		System.out.println("\n\n" + similarity.getClass().getSimpleName());
 
 		for (int j = 0; j < items.size(); j++) {
 			Item item = items.get(j);
 			List<Item> closestItems = item.getClosestItems(voters, items, similarity, 10);
-			System.out.print(item + ": \t");
+			System.out.print(" Closest items for " + item + ": ");
 			for (int i = 0; i < closestItems.size() && i < topN; i++) {
 				System.out.print(closestItems.get(i));
-				if (i < closestItems.size() - 1) {
-					System.out.print("\t");
+				if (i < closestItems.size() - 1 && i < topN - 1) {
+					System.out.print(",  ");
 				}
 			}
 			System.out.println();

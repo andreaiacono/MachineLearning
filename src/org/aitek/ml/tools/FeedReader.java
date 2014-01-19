@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.jsoup.Jsoup;
+import org.jsoup.parser.Parser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -55,7 +55,7 @@ public class FeedReader {
 				Element element = (Element) nodes.item(i);
 				// String feed = getElementValue(element, idTag);
 				String feedContent = getElementValue(element, descriptionTag) + getElementValue(element, titleTag);
-				org.jsoup.nodes.Document parsedHtml = Jsoup.parse(feedContent);
+				org.jsoup.nodes.Document parsedHtml = Parser.parse(feedContent, "/");
 				String[] words = parsedHtml.body().text().replaceAll("[\\.,;\":!?-]", " ").replaceAll("'", "").replaceAll("\\(", "").replaceAll("\\)", "").toLowerCase().split(" ");
 				for (String word : words) {
 					if (word.trim().length() > 0) {
